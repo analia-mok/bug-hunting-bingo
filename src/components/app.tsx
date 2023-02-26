@@ -19,7 +19,7 @@ const StyleAppContent = styled.main`
   p {
     color: ${cyan[700]};
     font-size: 18px;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     max-width: 80ch;
     line-height: 24px;
   }

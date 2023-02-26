@@ -1,7 +1,7 @@
 import { h, Fragment } from 'preact'
 import { useEffect, useId, useState } from 'preact/hooks'
 import { BingoCell } from '../BingoCell'
-import { StyledBingoCard, StyledBingoCardWrapper, StyledBingoRow } from './styles'
+import { StyledBingoCard, StyledBingoCardWrapper, StyledBingoRow, StyledTextAreaSection } from './styles'
 
 const placeholderBingoItems = [
   ['Service 1', 'Service 2', 'Service 3'],
@@ -76,6 +76,18 @@ export const BingoCard = () => {
 
   return (
     <Fragment>
+      <StyledTextAreaSection>
+        <label htmlFor={textareaId} style={{ display: 'block' }}>
+          Enter each service on a new line:
+        </label>
+        <textarea
+          name="servicesList"
+          id={textareaId}
+          cols={60}
+          rows={10}
+          onChange={(e) => updateServicesList(e.target.value)}
+        />
+      </StyledTextAreaSection>
       <StyledBingoCardWrapper>
         <StyledBingoCard>
           <tbody>
@@ -91,18 +103,6 @@ export const BingoCard = () => {
           </tbody>
         </StyledBingoCard>
       </StyledBingoCardWrapper>
-      <section>
-        <label htmlFor={textareaId} style={{ display: 'block' }}>
-          Enter each service on a new line:
-        </label>
-        <textarea
-          name="servicesList"
-          id={textareaId}
-          cols={30}
-          rows={10}
-          onChange={(e) => updateServicesList(e.target.value)}
-        />
-      </section>
     </Fragment>
   )
 }
