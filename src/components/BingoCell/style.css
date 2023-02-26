@@ -1,0 +1,10 @@
+.bingoCell {
+  border: 1px solid black;
+  /* Will make better later */
+  padding: 20px;
+  font-size: 18px;
+}
+
+.bingoCell label {
+  display: block;
+}
