@@ -1,4 +1,4 @@
-# bug-hunting-bingo
+# Debugging Bingo
 
 ## CLI Commands
 
