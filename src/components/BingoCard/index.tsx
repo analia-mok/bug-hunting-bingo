@@ -1,7 +1,7 @@
 import { h, Fragment } from 'preact'
 import { useEffect, useId, useState } from 'preact/hooks'
 import { BingoCell } from '../BingoCell'
-import { StyledAppWrapper, StyledBingoCard, StyledBingoCardWrapper, StyledBingoColumn, StyledBingoRow, StyledTextAreaSection } from './styles'
+import { StyledAppWrapper, StyledBingoCard, StyledBingoCardWrapper, StyledBingoColumn, StyledBingoRow, StyledCheckboxLabel, StyledTextAreaSection, StyledTotalServicesByLine } from './styles'
 
 // Placeholder content to preview bingo card table
 const placeholderBingoItems = [
@@ -20,8 +20,10 @@ export const BingoCard = () => {
   const [bingoItems, setBingoItems] = useState<string[][]>(
     placeholderBingoItems
   )
+  const [includeFreeSpace, setIncludeFreeSpace] = useState<boolean>(true)
 
   const textareaId = useId()
+  const freespaceCheckboxId = useId()
 
   // Check for saved selections from past sessions
   useEffect(() => {
@@ -46,7 +48,7 @@ export const BingoCard = () => {
 
     while (randomizedItems.length < 9) {
       // Add free space in the middle
-      if (randomizedItems.length === 4) {
+      if (includeFreeSpace && randomizedItems.length === 4) {
         randomizedItems.push('Free')
         continue
       }
@@ -72,7 +74,7 @@ export const BingoCard = () => {
     }
 
     setBingoItems(chunkedRandomizedItems)
-  }, [services])
+  }, [services, includeFreeSpace])
 
   let servicesTimeout: NodeJS.Timeout
 
@@ -94,18 +96,33 @@ export const BingoCard = () => {
     <StyledAppWrapper>
       <StyledTextAreaSection>
         <h2>Configuration:</h2>
-        <label htmlFor={textareaId} style={{ display: 'block' }}>
-          Enter each service on a new line:
-        </label>
-        <textarea
-          name="servicesList"
-          defaultValue={defaultTextAreaValue}
-          id={textareaId}
-          cols={60}
-          rows={10}
-          onChange={(e) => updateServicesList(e.target.value)}
-        />
-        <p>** Your services will be saved as you type for future browser sessions</p>
+        <div>
+          <label htmlFor={textareaId}>
+            Enter each service on a new line:
+          </label>
+          <textarea
+            name="servicesList"
+            defaultValue={defaultTextAreaValue}
+            id={textareaId}
+            cols={60}
+            rows={10}
+            onChange={(e) => updateServicesList(e.target.value)}
+          />
+          <StyledTotalServicesByLine>{services.length} / {includeFreeSpace ? '8' : '9'} tiles will be unique</StyledTotalServicesByLine>
+          <p>** Your services will be saved as you type for future browser sessions</p>
+        </div>
+        <div>
+          <StyledCheckboxLabel htmlFor={freespaceCheckboxId}>
+            <input
+              type="checkbox"
+              name="freeSpace"
+              id={freespaceCheckboxId}
+              checked={includeFreeSpace}
+              onChange={() => setIncludeFreeSpace(!includeFreeSpace)}
+            />
+            Include Free space
+          </StyledCheckboxLabel>
+        </div>
       </StyledTextAreaSection>
       <StyledBingoColumn>
         <h2>Your Card:</h2>
