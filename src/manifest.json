@@ -1,6 +1,6 @@
 {
-  "name": "bug-hunting-bingo",
-  "short_name": "bug-hunting-bingo",
+  "name": "debugging-bingo",
+  "short_name": "debugging-bingo",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

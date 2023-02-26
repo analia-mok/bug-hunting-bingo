@@ -15,7 +15,7 @@ export const BingoCell = forwardRef<HTMLInputElement, BingoCellProps>(
     return (
       <StyledBingoCell className={checked ? 'checked' : ''}>
         <label htmlFor={id}>
-          <span>{label}</span>
+          {label}
           <input
             ref={ref}
             type="checkbox"

@@ -1,18 +1,21 @@
 import { h, Fragment } from 'preact'
 import { useEffect, useId, useState } from 'preact/hooks'
 import { BingoCell } from '../BingoCell'
-import { StyledBingoCard, StyledBingoCardWrapper, StyledBingoRow, StyledTextAreaSection } from './styles'
+import { StyledAppWrapper, StyledBingoCard, StyledBingoCardWrapper, StyledBingoColumn, StyledBingoRow, StyledTextAreaSection } from './styles'
 
+// Placeholder content to preview bingo card table
 const placeholderBingoItems = [
   ['Service 1', 'Service 2', 'Service 3'],
   ['Service 4', 'Free', 'Service 5'],
   ['Service 6', 'Service 7', 'Service 8'],
 ]
 
+const SAVED_SERVICES_KEY = 'services'
+
 export const BingoCard = () => {
   // const cellARef = useRef<HTMLInputElement>()
 
-  // TODO: Check localstorage for default values.
+  const [defaultTextAreaValue, setDefaultTextAreaValue] = useState('')
   const [services, setServices] = useState<string[]>([])
   const [bingoItems, setBingoItems] = useState<string[][]>(
     placeholderBingoItems
@@ -20,10 +23,19 @@ export const BingoCard = () => {
 
   const textareaId = useId()
 
-  // useEffect(() => {
-  //   // Testing: Set ref to checked on mount.
-  //   // cellARef.current.setAttribute('checked', true)
-  // }, [])
+  // Check for saved selections from past sessions
+  useEffect(() => {
+    const savedServices = localStorage.getItem(SAVED_SERVICES_KEY)
+    const parsedSavedServices = savedServices ? JSON.parse(savedServices) : []
+
+    if (parsedSavedServices.length) {
+      const servicesSeparatedByNewline = parsedSavedServices.reduce((acc: string, current: string) => `${acc}\n${current}`, '').trim()
+
+      setServices(parsedSavedServices)
+      setDefaultTextAreaValue(servicesSeparatedByNewline)
+    }
+  }, [])
+
   useEffect(() => {
     if (!services.length) {
       return
@@ -68,41 +80,51 @@ export const BingoCard = () => {
   const updateServicesList = (list: string) => {
     clearTimeout(servicesTimeout)
     servicesTimeout = setTimeout(() => {
-      console.log('Updating....', list.split('\n'))
-      // TODO: Will this work on windows?
-      setServices(list.split('\n').filter((item) => item.length))
+      // Windows support?
+      list.replaceAll("\r\n", "\n")
+
+      const serviceList = list.split('\n').filter((item) => item.length)
+      setServices(serviceList)
+
+      localStorage.setItem(SAVED_SERVICES_KEY, JSON.stringify(serviceList))
     }, 500)
   }
 
   return (
-    <Fragment>
+    <StyledAppWrapper>
       <StyledTextAreaSection>
+        <h2>Configuration:</h2>
         <label htmlFor={textareaId} style={{ display: 'block' }}>
           Enter each service on a new line:
         </label>
         <textarea
           name="servicesList"
+          defaultValue={defaultTextAreaValue}
           id={textareaId}
           cols={60}
           rows={10}
           onChange={(e) => updateServicesList(e.target.value)}
         />
+        <p>** Your services will be saved as you type for future browser sessions</p>
       </StyledTextAreaSection>
-      <StyledBingoCardWrapper>
-        <StyledBingoCard>
-          <tbody>
-            {bingoItems.map((row, rowIndex) => (
-              <StyledBingoRow key={`bingo-row-${rowIndex}`}>
-                {row.map((item, index) => (
-                  <Fragment key={`bingo-item-${index}`}>
-                    <BingoCell label={item} />
-                  </Fragment>
-                ))}
-              </StyledBingoRow>
-            ))}
-          </tbody>
-        </StyledBingoCard>
-      </StyledBingoCardWrapper>
-    </Fragment>
+      <StyledBingoColumn>
+        <h2>Your Card:</h2>
+        <StyledBingoCardWrapper>
+          <StyledBingoCard>
+            <tbody>
+              {bingoItems.map((row, rowIndex) => (
+                <StyledBingoRow key={`bingo-row-${rowIndex}`}>
+                  {row.map((item, index) => (
+                    <Fragment key={`bingo-item-${index}`}>
+                      <BingoCell label={item} />
+                    </Fragment>
+                  ))}
+                </StyledBingoRow>
+              ))}
+            </tbody>
+          </StyledBingoCard>
+        </StyledBingoCardWrapper>
+      </StyledBingoColumn>
+    </StyledAppWrapper>
   )
 }
