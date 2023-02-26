@@ -1,0 +1,4 @@
+- Randomize card
+- Solved button that saves card state
+- Enter newline separated list of items
+- use checkbox with role=switch for entering bingo
