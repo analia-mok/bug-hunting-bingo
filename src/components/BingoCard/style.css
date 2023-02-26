@@ -1,0 +1,10 @@
+.bingoCard {
+  border-collapse: collapse;
+}
+
+.bingoCard td {
+  border: 1px solid black;
+  /* Will make better later */
+  padding: 20px;
+  font-size: 18px;
+}
