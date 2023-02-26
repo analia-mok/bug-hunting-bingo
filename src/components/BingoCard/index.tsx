@@ -1,8 +1,7 @@
 import { h, Fragment } from 'preact'
 import { useEffect, useId, useState } from 'preact/hooks'
 import { BingoCell } from '../BingoCell'
-
-import style from './style.css'
+import { StyledBingoCard, StyledBingoCardWrapper, StyledBingoRow } from './styles'
 
 const placeholderBingoItems = [
   ['Service 1', 'Service 2', 'Service 3'],
@@ -77,19 +76,21 @@ export const BingoCard = () => {
 
   return (
     <Fragment>
-      <table class={style.bingoCard}>
-        <tbody>
-          {bingoItems.map((row, rowIndex) => (
-            <tr key={`bingo-row-${rowIndex}`}>
-              {row.map((item, index) => (
-                <Fragment key={`bingo-item-${index}`}>
-                  <BingoCell label={item} />
-                </Fragment>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <StyledBingoCardWrapper>
+        <StyledBingoCard>
+          <tbody>
+            {bingoItems.map((row, rowIndex) => (
+              <StyledBingoRow key={`bingo-row-${rowIndex}`}>
+                {row.map((item, index) => (
+                  <Fragment key={`bingo-item-${index}`}>
+                    <BingoCell label={item} />
+                  </Fragment>
+                ))}
+              </StyledBingoRow>
+            ))}
+          </tbody>
+        </StyledBingoCard>
+      </StyledBingoCardWrapper>
       <section>
         <label htmlFor={textareaId} style={{ display: 'block' }}>
           Enter each service on a new line:

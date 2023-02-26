@@ -1,7 +1,7 @@
 import { h } from 'preact'
 import { forwardRef } from 'preact/compat'
 import { useId, useState } from 'preact/hooks'
-import style from './style.css'
+import { StyledBingoCell } from './styles'
 
 type BingoCellProps = {
   label: string
@@ -13,18 +13,20 @@ export const BingoCell = forwardRef<HTMLInputElement, BingoCellProps>(
     const id = useId()
 
     return (
-      <td class={style.bingoCell}>
-        <label htmlFor={id}>{label}</label>
-        <input
-          ref={ref}
-          type="checkbox"
-          checked={checked}
-          id={id}
-          onClick={() => {
-            setChecked(!checked)
-          }}
-        />
-      </td>
+      <StyledBingoCell className={checked ? 'checked' : ''}>
+        <label htmlFor={id}>
+          <span>{label}</span>
+          <input
+            ref={ref}
+            type="checkbox"
+            checked={checked}
+            id={id}
+            onClick={() => {
+              setChecked(!checked)
+            }}
+            />
+        </label>
+      </StyledBingoCell>
     )
   }
 )
