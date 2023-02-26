@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "bug-hunting-bingo",
+  "name": "debugging-bingo",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
