@@ -24,7 +24,7 @@ export const BingoCell = forwardRef<HTMLInputElement, BingoCellProps>(
             onClick={() => {
               setChecked(!checked)
             }}
-            />
+          />
         </label>
       </StyledBingoCell>
     )

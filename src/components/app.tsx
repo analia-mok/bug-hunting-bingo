@@ -3,6 +3,7 @@ import { BingoCard } from './BingoCard'
 import 'modern-normalize/modern-normalize.css'
 import styled from 'styled-components'
 import { cyan } from '../style/base'
+import { BingoContextProvider } from './BingoContext'
 
 const StyleIntroContent = styled.section`
   max-width: 768px;
@@ -31,12 +32,14 @@ const App = () => (
       <StyleIntroContent>
         <h1>Debugging Bingo</h1>
         <p>
-          Trying to solve a bug in a system with multiple moving parts?
-          Need a checklist to keep track of what system you already checked?
-          Why not keep things fun with a bingo card instead?
+          Trying to solve a bug in a system with multiple moving parts? Need a
+          checklist to keep track of what system you already checked? Why not
+          keep things fun with a bingo card instead?
         </p>
       </StyleIntroContent>
-      <BingoCard />
+      <BingoContextProvider>
+        <BingoCard />
+      </BingoContextProvider>
     </main>
   </div>
 )

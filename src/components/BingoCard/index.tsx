@@ -1,7 +1,16 @@
 import { h, Fragment } from 'preact'
-import { useEffect, useId, useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
+import { BingoCardConfig } from '../BingoCardConfig'
 import { BingoCell } from '../BingoCell'
-import { StyledAppWrapper, StyledBingoCard, StyledBingoCardWrapper, StyledBingoColumn, StyledBingoRow, StyledCheckboxLabel, StyledTextAreaSection, StyledTotalServicesByLine } from './styles'
+import { useBingoContext } from '../BingoContext'
+import {
+  StyledAppWrapper,
+  StyledBingoCard,
+  StyledBingoCardWrapper,
+  StyledBingoColumn,
+  StyledBingoRow,
+  StyledTextAreaSection,
+} from './styles'
 
 // Placeholder content to preview bingo card table
 const placeholderBingoItems = [
@@ -10,33 +19,11 @@ const placeholderBingoItems = [
   ['Service 6', 'Service 7', 'Service 8'],
 ]
 
-const SAVED_SERVICES_KEY = 'services'
-
 export const BingoCard = () => {
-  // const cellARef = useRef<HTMLInputElement>()
-
-  const [defaultTextAreaValue, setDefaultTextAreaValue] = useState('')
-  const [services, setServices] = useState<string[]>([])
   const [bingoItems, setBingoItems] = useState<string[][]>(
     placeholderBingoItems
   )
-  const [includeFreeSpace, setIncludeFreeSpace] = useState<boolean>(true)
-
-  const textareaId = useId()
-  const freespaceCheckboxId = useId()
-
-  // Check for saved selections from past sessions
-  useEffect(() => {
-    const savedServices = localStorage.getItem(SAVED_SERVICES_KEY)
-    const parsedSavedServices = savedServices ? JSON.parse(savedServices) : []
-
-    if (parsedSavedServices.length) {
-      const servicesSeparatedByNewline = parsedSavedServices.reduce((acc: string, current: string) => `${acc}\n${current}`, '').trim()
-
-      setServices(parsedSavedServices)
-      setDefaultTextAreaValue(servicesSeparatedByNewline)
-    }
-  }, [])
+  const { includeFreeSpace, services } = useBingoContext()
 
   useEffect(() => {
     if (!services.length) {
@@ -76,53 +63,10 @@ export const BingoCard = () => {
     setBingoItems(chunkedRandomizedItems)
   }, [services, includeFreeSpace])
 
-  let servicesTimeout: NodeJS.Timeout
-
-  // Debouncing services list updating
-  const updateServicesList = (list: string) => {
-    clearTimeout(servicesTimeout)
-    servicesTimeout = setTimeout(() => {
-      // Windows support?
-      list.replaceAll("\r\n", "\n")
-
-      const serviceList = list.split('\n').filter((item) => item.length)
-      setServices(serviceList)
-
-      localStorage.setItem(SAVED_SERVICES_KEY, JSON.stringify(serviceList))
-    }, 500)
-  }
-
   return (
     <StyledAppWrapper>
       <StyledTextAreaSection>
-        <h2>Configuration:</h2>
-        <div>
-          <label htmlFor={textareaId}>
-            Enter each service on a new line:
-          </label>
-          <textarea
-            name="servicesList"
-            defaultValue={defaultTextAreaValue}
-            id={textareaId}
-            cols={60}
-            rows={10}
-            onChange={(e) => updateServicesList(e.target.value)}
-          />
-          <StyledTotalServicesByLine>{services.length} / {includeFreeSpace ? '8' : '9'} tiles will be unique</StyledTotalServicesByLine>
-          <p>** Your services will be saved as you type for future browser sessions</p>
-        </div>
-        <div>
-          <StyledCheckboxLabel htmlFor={freespaceCheckboxId}>
-            <input
-              type="checkbox"
-              name="freeSpace"
-              id={freespaceCheckboxId}
-              checked={includeFreeSpace}
-              onChange={() => setIncludeFreeSpace(!includeFreeSpace)}
-            />
-            Include Free space
-          </StyledCheckboxLabel>
-        </div>
+        <BingoCardConfig />
       </StyledTextAreaSection>
       <StyledBingoColumn>
         <h2>Your Card:</h2>

@@ -32,7 +32,7 @@ export const StyledBingoCell = styled.td`
     word-break: break-word;
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     cursor: pointer;
   }
 `
