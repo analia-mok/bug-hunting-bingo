@@ -52,6 +52,8 @@ const ServicesTextArea: FunctionComponent = () => {
         id={textareaId}
         cols={60}
         rows={10}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onChange={(e) => updateServicesList(e.target.value)}
       />
     </Fragment>
