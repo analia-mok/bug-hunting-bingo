@@ -8,6 +8,7 @@ export const StyledBingoCell = styled.td`
   color: ${cyan[900]};
   font-weight: 500;
   height: 150px;
+  transition: background 0.2s, color 0.2s;
 
   &:last-child {
     border-right: 0;
@@ -28,6 +29,7 @@ export const StyledBingoCell = styled.td`
     flex-wrap: wrap;
     flex-direction: column;
     gap: 1rem;
+    word-break: break-word;
   }
 
   input[type="checkbox"] {

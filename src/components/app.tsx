@@ -7,12 +7,13 @@ import { cyan } from '../style/base'
 const StyleIntroContent = styled.section`
   max-width: 768px;
   margin: 0 auto;
+  padding: 0 2rem;
 
   h1 {
     color: ${cyan[900]};
     text-align: center;
     margin-bottom: 2rem;
-    margin-top: 2rem;
+    margin-top: 4rem;
   }
 
   p {

@@ -5,13 +5,22 @@ export const StyledAppWrapper = styled.section`
   display: flex;
   padding: 1rem 2rem;
   gap: 2rem;
+  flex-wrap: wrap;
+
+  @media screen and (min-width: 800px) {
+    flex-wrap: nowrap;
+  }
 `
 
 export const StyledTextAreaSection = styled.section`
-  flex: 1 1 50%;
-  max-width: 40ch;
-  margin-bottom: 4rem;
+  flex: 1 1 100%;
   color: ${cyan[700]};
+
+  @media screen and (min-width: 800px) {
+    flex: 1 1 0%;
+    margin-bottom: 4rem;
+    max-width: 40%;
+  }
 
   label {
     font-size: 18px;
@@ -29,8 +38,12 @@ export const StyledTextAreaSection = styled.section`
 `
 
 export const StyledBingoColumn = styled.section`
-  flex: 1 1 50%;
+  flex: 1 1 100%;
   margin-bottom: 6rem;
+
+  @media screen and (min-width: 800px) {
+    flex: 1 1 50%;
+  }
 `
 
 export const StyledBingoCardWrapper = styled.div`
